@@ -319,17 +319,17 @@ int editArtist(array * a, char * title){
     }
   }
   printf("Enter new artist\n");
-  userInput(newartist);
+  while(userInput(newartist));
   strcpy(al->artist, newartist);
   return 0;
 }
 
-int editTitle(array * a, char * title){
+int editTitle(array * a, char *title){
   if (!a || !title) return -1;//checks if NULL
   album *al = NULL;
-  char newtitle[50];
+  char *newtitle = NULL;
   int err;
-  for(unsigned i = 0; i <= a->inUse; i++){
+  for(size_t i = 0; i <= a->inUse; i++){
     arrayGet(a, i, (void**) al);
     err = strcmp(title, al->title);
     if(err == 0){
@@ -337,7 +337,7 @@ int editTitle(array * a, char * title){
     }
   }
   printf("What is the new title?\n");
-  userInput(newtitle);
+  while(userInput(newtitle));
   strcpy(al->title, newtitle);
   return 0;
 }
