@@ -1,6 +1,6 @@
 #ifndef ARRAY_H_
 #define ARRAY_H_
-
+#include "album.h"
 typedef struct _array array;
 
 /* Return a new array with no elements.
