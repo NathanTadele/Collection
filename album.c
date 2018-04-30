@@ -3,6 +3,7 @@
 #include <string.h>
 #include "album.h"
 #include "array.h"
+#include "saveAlbums.h"
 
   struct _array{
     size_t capacity;//how much space is in the collection array
@@ -36,6 +37,7 @@ int newAlbum(array *a) {
   err = arrayPushBack(a, (void**) al);//puts the album struct into the array struct
   //arrayPut(a, sizeof(album), al);
   sort(a);
+  // saveAlbum();
 
   if (err) return -1;
 return 0;
@@ -59,18 +61,7 @@ int sort(array *a){
   }
   return 0;
 }
-/*
-int sort(array *a, void** al){
-  for(size_t i = 0; i <= a->inUse; i++){
-    for(size_t j = i +1; j<= a-> inUse; j++){
-      void *al = (album *)al->title[i];
-      void *aj = (album *)al->title[j];
-      sortArray(a, sortByTitle(al, aj));
-    }
-  }
-  return 0;
-}
-*/
+
 int userInput(char *input){
   fgets(input, sizeof(input),stdin);
   //scanf("%s/n", input);
@@ -80,25 +71,6 @@ int userInput(char *input){
   }
   return 0;
 }
-/*
-int userInput(char * destination){//this code was written because scanf stops after it encounters a space and we needed to combat that
-  int i = 0;
-  while(scanf("%c", destination) != '\n'){
-    i++;
-    if(i >= 48){
-      printf("Exceeded character limit: Note that some characters have been cut off.\n");
-      break;
-  }
-  }
-destination[i] = '\0';
-  return 0;
-}
-*/
-//have some way for the user
-
-
-
-
 
 int deleteAlbum(array *a){
   if(!a) return -1;//checks for null pointers
@@ -117,16 +89,7 @@ int deleteAlbum(array *a){
 }
 return -1;
 }
-/*
-int editTitle(album *al, char * title){
-  if (!al || !title) return -1;//checks if NULL
-  char newtitle[50];
-  printf("What is the new title?\n");
-  userInput(newtitle);
-  strcpy(al->title, newtitle);
-  return 0;
-}
-*/
+
 
 int edit(array *a){
   printf("What would you like to edit?\n");
@@ -153,25 +116,20 @@ int edit(array *a){
   }
 return 0;
 }
-/*  switch(option2){
-    case 1: printf("Enter what title you want to edit\n");
-              userInput(e);
-              editTitle(a, e);
-    case 2: printf("What is the title of the album\n");
-              userInput(e);
-              editArtist(a,e);
-    case 3: printf("What is the title of the album\n");
-              userInput(e);
-              editYear(a, e);
-
-  }
-return 0;
-}
-*/
-
 void printString(album * e){
 
   printf("%s\n", e->title);
+}
+
+void printAlbums(array *a){
+
+  for(size_t i = 0; i < a->inUse; i++){
+    album *al = a->data[i];
+    printf("%s", al->title);
+    printf("%s", al->artist);
+    printf("%d", al->year);
+
+  }
 }
 
 int printInfo(array *a){
@@ -187,7 +145,7 @@ int printInfo(array *a){
     while(userInput(e));
     printAlbum(a, e);
   }
-  //if (option3 == 2) printArray(a, printString);
+  if (option3 == 2) printAlbums(a);
   if (option3 == 3){
     search(a);
   }
@@ -234,48 +192,6 @@ album * findArtist(array * a, char * artist){
 }
 
 
-  /*switch (option3) {
-    case 1 :printf("Enter what album you want to see the details of\n");
-              userInput(e);
-              printAlbum(a, e);
-    case 2 :printList(a);
-  }
-  return 0;
-}
-
-int printList(array *a){
-  if (!a) return -1;
-  album *al = NULL;
-  //int err;
-  for (unsigned i = 0; i <= a-> inUse; i++){
-
-    printf("%s\n", al[i].title);
-  }
-  return 0;
-}
-*/
-
-/*
-int editTitle(array * a, char * title){
-  if (!a || !title) return -1;//checks if NULL
-  album *al;
-  char newtitle[50];
-  int err;
-  for(int i = 0; i <= a->capacity -1; i++){
-    arrayGet(a, i, &al);
-    err = strcmp(title, al->title);
-    if(err == 0){
-      break;
-    }
-  }
-  printf("What is the new title?\n");
-  userInput(newtitle);
-  strcpy(al->title, newtitle);
-  return 0;
-}
-
-*/
-
 album * findAlbum(array *a, char * title){
   if(!a || !title) return NULL;
   album *al = NULL;
@@ -302,23 +218,6 @@ int printAlbum(array * a, char * title){
     printf("%d\n", al->year);
   return 0;
 }
-/*
-printListTitle(array *a){
-
-}
-
-
-
-
-int printAlbums(array *a){
-  if(!a) return -1;
-  for(int i = 0; i <= a->inUse; i++){
-      printf("%s\n", a->data[i]->title);
-  }
-return 0;
-}
-
-*/
 
 int printTitle(array *a, char * title){
   if(!a || !title) return -1;
@@ -411,53 +310,3 @@ int printArtist(array *a, char * title){
   printf("%s\n", title);
 return 0;
 }
-
-
-/*
-int editYear(array *a, char * title){
-  if (!a || !title) return -1;
-  album *al;
-  int newyear;
-  int err;
-  for (int i = 0; i <= a->capacity -1; i++){
-    arrayGet(a, i, &al);
-    err = strcmp(title,al->title);
-    if(err == 0){
-      break;
-    }
-  }
-  printf("Enter new year:\n");
-  scanf("%s", newyear);
-  strcpy(al->year, newyear);
-  return 0;
-}
-*/
-/*
-int sort(array * a){
-  if (!a) return -1;
-  album *al;
-  int option4;
-  printf("What would you like to sort the albums by?\n");
-  printf("1. By title\n");
-  printf("2. By artist\n");
-  printf("3. By year\n");
-  scanf("%d", &option4);
-  if (option4 == 1) sortArray(a, sortByTitle);
-  if (option4 == 2) sortArrayt(a, sortByArtist);
-  if (option4 == 3) sortArray(a, sortByYear);
-return 0;
-}
-
-int titleCompare(const void *p, const void *q){
-
-}
-
-void *sortByTitle(const void * x, const void *y){
-  int xx, yy;
-  int ret;
-  xx = (int )x;
-  yy = (int )y;
-  ret = xx - yy;
-  return ret;
-}
-*/
