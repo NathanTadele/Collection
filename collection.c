@@ -13,8 +13,8 @@ int userOption(){
   printf("3. Do you want to delete an album?\n");
   printf("4. Do you want to view the info about your albums?\n");
   //printf("6. Would you like to sort your collection?\n");
-  printf("7. Search for an artsit.\n");
-  printf("8. Quit\n");
+
+  printf("5. Quit\n");
   printf("Choose a number from the above options.\n");
   scanf("%d", &option);
   return 1;
@@ -24,7 +24,6 @@ int execute(array *Collection) {
   if (option == 1) newAlbum(Collection);
   if (option == 2) edit(Collection);
   if (option == 3) deleteAlbum(Collection);
-  //if (option == 4) printInfo(Collection);
   if (option == 4) printInfo(Collection);
   if (option == 7) search (Collection);
   if (option == 8) return 0;
