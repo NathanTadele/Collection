@@ -3,8 +3,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c11 -pedantic -g
 LDLIBS = -lm
 PROG = collection
-SRC = $(PROG).c album.c array.c
-HDR = album.h array.h
+SRC = $(PROG).c album.c array.c saveAlbums.c
+HDR = album.h array.h saveAlbums.h
 OBJ = $(SRC:.c=.o)
 
 # Targets

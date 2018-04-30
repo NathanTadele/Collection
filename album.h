@@ -1,6 +1,6 @@
 #ifndef ALBUM_H_
 #define ALBUM_H_
-
+#include "array.h"
 typedef struct _album album;
 typedef struct _array array;
 
@@ -41,8 +41,7 @@ int printList(array *a);
 
 int printAlbum(array *a,char * title);
 
-int printAlbums(array *a);
-
+void printAlbums(array *a);
 
 int titleCompare(const void *, const void *);
 
