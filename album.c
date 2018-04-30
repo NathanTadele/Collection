@@ -35,7 +35,9 @@ int newAlbum(array *a) {
   al->year = year;//stores what they typed in year in the album struct
   err = arrayPushBack(a, (void**) al);//puts the album struct into the array struct
   //arrayPut(a, sizeof(album), al);
+
   sort(a);
+
 
   if (err) return -1;
 return 0;
@@ -48,8 +50,10 @@ int sort(array *a){
   album *temp = NULL;
   for(unsigned i = 0; i < a->inUse; i++){
     for(unsigned j = i+1; j <= a->inUse; j++){
+
       arrayGet(a, i, (void*) &al);
       arrayGet(a, j, (void*) &aj);
+
       if(al->title > aj->title){
         temp =  al;
         al = aj;
@@ -96,6 +100,40 @@ destination[i] = '\0';
 */
 //have some way for the user
 
+
+int search(array *a){
+  if(!a) return -1;
+  char e[50];
+  printf("Which artist would you like to search for?\n");
+  while (userInput(e));
+  printf("Input: %s\n", e);
+  searchArtist(a,e);
+  return 0;
+}
+
+int searchArtist(array * a, char * artist){
+  if(!a || !artist) return -1;
+  album *al = NULL;
+  int err;
+  for (unsigned i = 0; i < a->inUse; i++){
+    arrayGet(a, i, (void **) al);
+    err = strcmp(artist, al->artist);
+    if(err == 0){
+      printf("%s\n", al->title);
+    }
+  }
+  return 0;
+}
+
+album * findArtist(array * a, char * artist){
+  if(!a || !artist) return NULL;
+  album *al = NULL;
+  int err;
+  for (unsigned i = 0; i <= a->capacity -1; i++){
+    arrayGet(a, i, (void**)al);
+    err = strcmp(artist, al->artist);
+    if(err == 0){
+    }
 
 
 
@@ -186,10 +224,12 @@ int printInfo(array *a){
     printf("Enter the album you want to see.\n");
     while(userInput(e));
     printAlbum(a, e);
+
   }
   //if (option3 == 2) printArray(a, printString);
   if (option3 == 3){
     search(a);
+
   }
 return 0;
 }
@@ -289,8 +329,23 @@ album * findAlbum(array *a, char * title){
   }
   printf("Error: album you have searched for does not currently exist.\n");
   return NULL;
+
 }
 
+
+
+int printAlbum(array * a, char * title){
+  if(!a) return -1;
+  album *al;
+  al = findAlbum(a, title);
+    printf("%s\n", al->title);
+    printf("%s\n", al->artist);
+    printf("%d\n", al->year);
+  return 0;
+
+}
+
+printListTitle(array *a)
 
 
 int printAlbum(array * a, char * title){
