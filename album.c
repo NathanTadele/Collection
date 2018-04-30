@@ -35,7 +35,9 @@ int newAlbum(array *a) {
   al->year = year;//stores what they typed in year in the album struct
   err = arrayPushBack(a, (void**) al);//puts the album struct into the array struct
   //arrayPut(a, sizeof(album), al);
-  //sort(a);
+
+  sort(a);
+
 
   if (err) return -1;
 return 0;
@@ -48,8 +50,10 @@ int sort(array *a){
   album *temp = NULL;
   for(unsigned i = 0; i < a->inUse; i++){
     for(unsigned j = i+1; j <= a->inUse; j++){
-      arrayGet(a, i, (void**)al);
-      arrayGet(a, j, (void**)aj);
+
+      arrayGet(a, i, (void*) &al);
+      arrayGet(a, j, (void*) &aj);
+
       if(al->title > aj->title){
         temp =  al;
         al = aj;
@@ -129,11 +133,8 @@ album * findArtist(array * a, char * artist){
     arrayGet(a, i, (void**)al);
     err = strcmp(artist, al->artist);
     if(err == 0){
-
     }
-  }
-  return NULL;
-}
+
 
 
 
@@ -145,7 +146,7 @@ int deleteAlbum(array *a){
   printf("Which album do you want to delete?\n");
   while(userInput(e));
   for(unsigned i = 0; i <= a->inUse; i++){
-    arrayGet(a, i, (void**) al);//gets information from each album in the array struct
+    arrayGet(a, i, (void*) &al);//gets information from each album in the array struct
     err = strcmp(e,al->title);// finds an album title that directly matches the title that the user netered in
     if(err == 0){
       free(a[i].data);//deletes the album the user entered in
@@ -215,6 +216,7 @@ int printInfo(array *a){
   printf("What would you like to print?\n");
   printf("1. Details of a specific album\n");
   printf("2. Full list of albums\n");
+  printf("3. List of albums by one artist\n");
   int option3;
   char e[50];
   scanf("%d/n", &option3);
@@ -222,12 +224,54 @@ int printInfo(array *a){
     printf("Enter the album you want to see.\n");
     while(userInput(e));
     printAlbum(a, e);
+
   }
-  if (option3 == 2) printArray(a, printString);
+  //if (option3 == 2) printArray(a, printString);
+  if (option3 == 3){
+    search(a);
+
+  }
 return 0;
 }
 
 
+int search(array *a){
+  if(!a) return -1;
+  char e[50];
+  printf("Which artist would you like to search for?\n");
+  while (userInput(e));
+  printf("Input: %s\n", e);
+  searchArtist(a,e);
+  return 0;
+}
+
+int searchArtist(array * a, char * artist){
+  if(!a || !artist) return -1;
+  album *al = NULL;
+  int err;
+  for (unsigned i = 0; i < a->inUse; i++){
+    arrayGet(a, i, (void *) &al);
+    err = strcmp(artist, al->artist);
+    if(err == 0){
+      printf("%s\n", al->title);
+    }
+  }
+  return 0;
+}
+
+album * findArtist(array * a, char * artist){
+  if(!a || !artist) return NULL;
+  album *al = NULL;
+  int err;
+  for (unsigned i = 0; i <= a->capacity -1; i++){
+    arrayGet(a, i, (void*) &al);
+    err = strcmp(artist, al->artist);
+    if(err == 0){
+
+    }
+  }
+  return NULL;
+}
 
 
   /*switch (option3) {
@@ -285,6 +329,7 @@ album * findAlbum(array *a, char * title){
   }
   printf("Error: album you have searched for does not currently exist.\n");
   return NULL;
+
 }
 
 
@@ -297,12 +342,28 @@ int printAlbum(array * a, char * title){
     printf("%s\n", al->artist);
     printf("%d\n", al->year);
   return 0;
+
 }
 
 printListTitle(array *a)
 
 
+int printAlbum(array * a, char * title){
+  if(!a) return -1;
+  album *al;
+  al = findAlbum(a, title);
+    printf("%s\n", al->title);
+    printf("%s\n", al->artist);
+    printf("%d\n", al->year);
+  return 0;
+}
 /*
+printListTitle(array *a){
+
+}
+
+
+
 
 int printAlbums(array *a){
   if(!a) return -1;
@@ -394,7 +455,7 @@ int printArtist(array *a, char * title){
   album *al = NULL;
   int err;
   for(unsigned i = 0; i <= a->inUse; i++){
-    arrayGet(a, i,(void**) al);
+    arrayGet(a, i,(void*) &al);
     err = strcmp(title,al->title);
     if(err == 0){
       break;
