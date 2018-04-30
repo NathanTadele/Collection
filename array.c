@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "array.h"
+#include "album.h"
 
 struct _array {
   size_t capacity; /* elements allocated */
@@ -55,7 +56,7 @@ int arrayNum(array const * a, size_t * num) {
 }
 
 int arrayGet(array const * a, size_t index, void ** e) {
-  if (!a || !e || index > a->inUse) return -1;
+  if (!a || !e || index >= a->inUse) return -1;
   *e = a->data[index];
   return 0;
 }
@@ -68,9 +69,9 @@ int arrayPushBack(array * a, void * e) {
   return 0;
 }
 
-int arrayPut(array * a, size_t index, void * e) {
+int arrayPut(array * a, size_t index, void * al) {
   if (!a || index >= a->inUse) return -1;
-  a->data[index] = e;
+  a->data[index] = al;
   return 0;
 }
 

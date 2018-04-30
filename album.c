@@ -11,11 +11,10 @@
   };
 
   struct _album{
-    char title[50];
-    char artist[50];
+    char title[500];
+    char artist[500];
     int year;
   };
-
 
 int newAlbum(array *a) {
   if(!a) return -1;//gives error if the array is null
@@ -31,18 +30,50 @@ int newAlbum(array *a) {
   while (userInput(artist));//  lets user input artist for an album
   printf("What year was this album released?\n");
   scanf("%d", &year);// lets user input year that an album was released
-  strcpy(al->title, title);// stores what they typed in title in the album struct
-  strcpy(al->artist, artist);//stores what they typed in artist in the album struct
+  strcpy(al->artist, artist);// stores what they typed in title in the album struct
+  strcpy(al->title, title);//stores what they typed in artist in the album struct
   al->year = year;//stores what they typed in year in the album struct
-  err = arrayPushBack(a, (void*) al);//puts the album struct into the array struct
-  arrayPut(a, sizeof(album), (void*) al);
+  err = arrayPushBack(a, (void**) al);//puts the album struct into the array struct
+  //arrayPut(a, sizeof(album), al);
+  //sort(a);
+
   if (err) return -1;
 return 0;
 }
 
-
+int sort(array *a){
+  if(!a) return -1;
+  album *al = NULL;
+  album *aj = NULL;
+  album *temp = NULL;
+  for(unsigned i = 0; i < a->inUse; i++){
+    for(unsigned j = i+1; j <= a->inUse; j++){
+      arrayGet(a, i, (void**)al);
+      arrayGet(a, j, (void**)aj);
+      if(al->title > aj->title){
+        temp =  al;
+        al = aj;
+        aj = temp;
+      }
+    }
+  }
+  return 0;
+}
+/*
+int sort(array *a, void** al){
+  for(size_t i = 0; i <= a->inUse; i++){
+    for(size_t j = i +1; j<= a-> inUse; j++){
+      void *al = (album *)al->title[i];
+      void *aj = (album *)al->title[j];
+      sortArray(a, sortByTitle(al, aj));
+    }
+  }
+  return 0;
+}
+*/
 int userInput(char *input){
   fgets(input, sizeof(input),stdin);
+  //scanf("%s/n", input);
   if (*input == ' '|| input[1] == '\0'){
     // printf("error\n");
     return 1;
@@ -65,20 +96,6 @@ destination[i] = '\0';
 */
 //have some way for the user
 
-album * findAlbum(array *a, char * title){
-  if(!a || !title) return NULL;
-  album *al = NULL;
-  int err;
-  for(unsigned i = 0; i <= a->inUse; i++){
-    arrayGet(a, i, (void **) al);
-    err = strcmp(title, al->title);
-    if(err == 0){
-      return al;
-    }
-  }
-  printf("Error: album you have searched for does not currently exist.\n");
-  return NULL;
-}
 
 int search(array *a){
   if(!a) return -1;
@@ -158,7 +175,7 @@ int edit(array *a){
   scanf("%d/n", &option2);
   if (option2 == 1){
     printf("Enter the title of the album you want to edit.\n");
-    while (userInput(e));
+    while(userInput(e));
     editTitle(a,e);
   }
   if(option2 == 2){
@@ -189,9 +206,9 @@ return 0;
 }
 */
 
-void printString(void const * e){
-  char * music = (char *) e;
-  printf("%s\n", music);
+void printString(album * e){
+
+  printf("%s\n", e->title);
 }
 
 int printInfo(array *a){
@@ -204,7 +221,7 @@ int printInfo(array *a){
   if (option3 == 1){
     printf("Enter the album you want to see.\n");
     while(userInput(e));
-    printAlbum(a,e);
+    printAlbum(a, e);
   }
   if (option3 == 2) printArray(a, printString);
 return 0;
@@ -255,25 +272,34 @@ int editTitle(array * a, char * title){
 
 */
 
-
-
-int printAlbum(array *a, char *title){
-  if(!a) return -1;
+album * findAlbum(array *a, char * title){
+  if(!a || !title) return NULL;
   album *al = NULL;
   int err;
   for(unsigned i = 0; i <= a->inUse; i++){
-  arrayGet(a, i, (void**) al);
-  err = strcmp(title, al->title);
-  if(err == 0){
-    break;
+    arrayGet(a, i, (void *) &al);
+    err = strcmp(title, al->title);
+    if(err == 0){
+      return al;
+    }
   }
-  }
-  printf("%s\n", al->title);
-  printf("%s\n", al->artist);
-  printf("%d\n", al->year);
+  printf("Error: album you have searched for does not currently exist.\n");
+  return NULL;
+}
+
+
+
+int printAlbum(array * a, char * title){
+  if(!a) return -1;
+  album *al;
+  al = findAlbum(a, title);
+    printf("%s\n", al->title);
+    printf("%s\n", al->artist);
+    printf("%d\n", al->year);
   return 0;
 }
 
+printListTitle(array *a)
 
 
 /*
@@ -293,7 +319,7 @@ int printTitle(array *a, char * title){
   album *al = NULL;
   int err;
   for(unsigned i = 0; i < a->inUse; i++){
-    arrayGet(a, i, (void**) al);
+    arrayGet(a, i, (void*) &al);
     err = strcmp(title,al->title);
     if(err == 0){
       break;
@@ -312,33 +338,36 @@ int editArtist(array * a, char * title){
   char newartist [50];
   int err;
   for (unsigned i = 0; i <= a->inUse; i++){
-    arrayGet(a, i, (void**) al);
+    arrayGet(a, i, (void*) &al);
     err = strcmp(title, al->title);
     if(err == 0){
       break;
     }
   }
   printf("Enter new artist\n");
-  while(userInput(newartist));
+  userInput(newartist);
   strcpy(al->artist, newartist);
   return 0;
 }
 
-int editTitle(array * a, char *title){
+int editTitle(array * a, char * title){
   if (!a || !title) return -1;//checks if NULL
   album *al = NULL;
-  char *newtitle = NULL;
+  char newtitle[50];
   int err;
-  for(size_t i = 0; i <= a->inUse; i++){
-    arrayGet(a, i, (void**) al);
+  for(unsigned i = 0; i <= a->inUse; i++){
+    arrayGet(a, i, (void*) &al);
     err = strcmp(title, al->title);
     if(err == 0){
+      printf("%s\n",al->title);
+      printf("What is the new title?\n");
+      userInput(newtitle);
+      strcpy(al->title, newtitle);
+      printf("%s\n",al->title);
       break;
     }
+    else printf("Title was not found!\n");
   }
-  printf("What is the new title?\n");
-  while(userInput(newtitle));
-  strcpy(al->title, newtitle);
   return 0;
 }
 
@@ -347,7 +376,7 @@ int editYear(array * a, char * title){
   album *al = NULL;
   int newYear, err;
   for (unsigned i = 0; i <= a->inUse; i++){
-    arrayGet(a, i,(void**) al);
+    arrayGet(a, i,(void*) &al);
     err = strcmp(title, al->title);
     if (err == 0){
       break;
@@ -417,6 +446,12 @@ int titleCompare(const void *p, const void *q){
 
 }
 
-int sortByTitle(array *a, array *b){
-
+void *sortByTitle(const void * x, const void *y){
+  int xx, yy;
+  int ret;
+  xx = (int )x;
+  yy = (int )y;
+  ret = xx - yy;
+  return ret;
+}
 */

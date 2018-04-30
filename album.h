@@ -29,6 +29,8 @@ Returns 0 if successful and -1 if unsuccessful*/
 returns 0 if successful and -1 if unsuccessful*/
 //int printYear(album *al);
 
+album * findAlbum(array *a, char * e);
+
 int edit(array *a);
 
 int userInput(char *i);
@@ -41,11 +43,12 @@ int printAlbum(array *a,char * title);
 
 int printAlbums(array *a);
 
-int sort(array *a);
 
 int titleCompare(const void *, const void *);
 
-int sortByTitle(array *a);
+int sort(array *a);
+
+void* sortByTitle(const void *a, const void *b);
 
 int sortByArtist(array *a);
 
