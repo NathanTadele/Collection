@@ -55,7 +55,7 @@ int arrayNum(array const * a, size_t * num) {
 }
 
 int arrayGet(array const * a, size_t index, void ** e) {
-  if (!a || !e || index >= a->inUse) return -1;
+  if (!a || !e || index > a->inUse) return -1;
   *e = a->data[index];
   return 0;
 }
