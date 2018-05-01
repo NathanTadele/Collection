@@ -11,14 +11,15 @@ int arianaGrande(){
   "Title: Best Mistakes\n"
   "Artist: Ariana Grande ft. Big Sean\n"
   "Year: 2014\n"
-
+"\n"
+"Lyrics:\n"
   "How soon do we forget how we felt?\n"
 "Dealing with emotions that never left\n"
 "Playing with the hand that we were dealt in this game\n"
 "Maybe I'm the sinner and you're the saint\n"
 "Gotta stop pretending what we ain't\n"
 "Why we pointing fingers anyway when we're the same?\n"
-
+"\n"
 "[Pre-Chorus: Ariana Grande]\n"
 "Break up, make up\n"
 "Total waste of time\n"
@@ -26,13 +27,13 @@ int arianaGrande(){
 "Cause if the water dries up and the moon stops shining\n"
 "Stars fall, and the world goes blind\n"
 "Boy, you know I'll be savin' my love for you, for you\n"
-
+"\n"
 "[Chorus: Ariana Grande]\n"
 "Cause you're the best mistake I've ever made\n"
 "But we hold on, hold on\n"
 "There's no pot of gold in the rainbows we chase\n"
 "But we hold on, hold on, yeah\n"
-
+"\n"
 "[Verse 2: Big Sean]\n"
 "I guess time's wasting\n"
 "Tick-tocking, lip locking\n"
@@ -61,6 +62,7 @@ return 0;
 }
 
 int userOption(){
+  int err;
   printf("Welcome to album collection! What would you like to do?\n");
   printf("1. Do you want to add an album?\n");
   printf("2. Do you want to edit an album?\n");
@@ -69,7 +71,11 @@ int userOption(){
   printf("5. Best Mistakes by Ariana Grande\n");
   printf("6. Quit\n");
   printf("Choose a number from the above options.\n");
-  scanf("%d", &option);
+  err = scanf("%d", &option);
+  if(!err){
+    printf("That is not a number!\n");
+    return 0;
+  }
   return 1;
 }
 
