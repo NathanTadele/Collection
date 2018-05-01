@@ -25,8 +25,7 @@ int execute(array *Collection) {
   if (option == 2) edit(Collection);
   if (option == 3) deleteAlbum(Collection);
   if (option == 4) printInfo(Collection);
-  if (option == 7) search (Collection);
-  if (option == 8) return 0;
+  if (option == 5) return 0;
   return 1;
 }
 
