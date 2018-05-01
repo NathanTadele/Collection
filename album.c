@@ -3,7 +3,6 @@
 #include <string.h>
 #include "album.h"
 #include "array.h"
-#include "saveAlbums.h"
 
   struct _array{
     size_t capacity;//how much space is in the collection array
@@ -66,7 +65,7 @@ int sort(array *a){
 }
 
 int userInput(char *input){
-  fgets(input, sizeof(input),stdin);
+  fgets(input, 10*sizeof(input),stdin);
   //scanf("%s/n", input);
   if (*input == ' '|| input[1] == '\0'){
     // printf("error\n");
@@ -132,7 +131,7 @@ void printAlbums(array *a){
 
   for(size_t i = 0; i < a->inUse; i++){
     album *al = a->data[i];
-    printf("%s", al->title);
+    printf("\n%s", al->title);
     printf("%s", al->artist);
     printf("%d\n", al->year);
 
@@ -213,23 +212,6 @@ int printAlbum(array * a, char * title){
   return 0;
 }
 
-int printTitle(array *a, char * title){
-  if(!a || !title) return -1;
-  album *al = NULL;
-  int err;
-  for(unsigned i = 0; i < a->inUse; i++){
-    arrayGet(a, i, (void*) &al);
-    err = strcmp(title,al->title);
-    if(err == 0){
-      break;
-      }
-    else
-        return -1;
-  }
-  printf("%s\n", title);
-return 0;
-}
-
 
 int editArtist(array * a, char * title){
   if (!a || !title) return -1;
@@ -284,22 +266,4 @@ int editYear(array * a, char * title){
   while(scanf("%d", &newYear) != 1);
   al->year = newYear;
   return 0;
-}
-
-
-int printArtist(array *a, char * title){
-  if(!a || !title) return -1;
-  album *al = NULL;
-  int err;
-  for(unsigned i = 0; i <= a->inUse; i++){
-    arrayGet(a, i,(void*) &al);
-    err = strcmp(title,al->title);
-    if(err == 0){
-      break;
-      }
-    else
-        return -1;
-  }
-  printf("%s\n", title);
-return 0;
 }
