@@ -189,7 +189,7 @@ album * findAlbum(array *a, char * title){
   if(!a || !title) return NULL;
   album *al = NULL;
   int err;
-  for(unsigned i = 0; i <= a->inUse; i++){
+  for(unsigned i = 0; i < a->inUse; i++){
     arrayGet(a, i, (void *) &al);
     err = strcmp(title, al->title);
     if(err == 0){
@@ -236,7 +236,7 @@ int editTitle(array * a, char * title){
   album *al = NULL;
   char newtitle[50];
   int err;
-  for(unsigned i = 0; i <= a->inUse; i++){
+  for(unsigned i = 0; i < a->inUse; i++){
     arrayGet(a, i, (void*) &al);
     err = strcmp(title, al->title);
     if(err == 0){
@@ -255,7 +255,7 @@ int editYear(array * a, char * title){
   if(!a || !title) return -1;
   album *al = NULL;
   int newYear, err;
-  for (unsigned i = 0; i <= a->inUse; i++){
+  for (unsigned i = 0; i < a->inUse; i++){
     arrayGet(a, i,(void*) &al);
     err = strcmp(title, al->title);
     if (err == 0){
